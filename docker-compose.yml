@@ -1,8 +1,11 @@
 version: '3'
 services:
   eureka-server:
-    image: eureka-server
     container_name: eureka-server
+    build:
+      context: ./service-discovery/
+      dockerfile: Dockerfile
+    image: eureka-server
     ports:
       - "8761:8761"
     networks:
@@ -13,8 +16,11 @@ services:
       - EUREKA_PORT=8761
 
   config-server:
-    image: config-server
     container_name: config-server
+    build:
+      context: ./config-server/
+      dockerfile: Dockerfile
+    image: config-server
     ports:
       - "8888:8888"
     networks:
@@ -24,6 +30,10 @@ services:
    # restart: on-failure
   
   book-service:
+    container_name: book-service
+    build:
+      context: ./book-service/
+      dockerfile: Dockerfile
     image: book-service
     depends_on:
       - config-server
@@ -40,6 +50,10 @@ services:
     entrypoint: /app/book_service_entry_point.sh
 
   author-service:
+    container_name: author-service
+    build:
+      context: ./author-service/
+      dockerfile: Dockerfile
     image: author-service
     depends_on:
       - config-server
