@@ -1,0 +1,16 @@
+server:
+  port: ${PORT:8761} # Indicate the default PORT where this service will be started
+spring:
+  application:
+    name: service-discovery
+  #cloud:
+   # config:
+    #  uri: http://${CONFIG_SERVER_HOST:localhost}:${CONFIG_SERVER_PORT:9090}
+
+eureka:
+  client:
+    registerWithEureka: false   #telling the server not to register himself in the service registry
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+      

@@ -1,0 +1,59 @@
+version: '3'
+services:
+  eureka-server:
+    image: eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - "config-network"
+    environment:
+      - EUREKA_INSTANCE_PREFERIPADDRESS=true
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+
+  config-server:
+    image: config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - "config-network"
+    environment:
+      - CONFIG_SERVER_DEFAULT_PORT=8888
+   # restart: on-failure
+  
+  book-service:
+    image: book-service
+    depends_on:
+      - config-server
+      - eureka-server
+    ports:
+      - "8082:8082"
+    networks:
+      - "config-network"
+    environment:
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+    entrypoint: /app/book_service_entry_point.sh
+
+  author-service:
+    image: author-service
+    depends_on:
+      - config-server
+      - eureka-server
+    ports:
+      - "8081:8081"
+    networks:
+      - "config-network"
+    environment:
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+    entrypoint: /app/author_service_entry_point.sh
+
+networks:
+  config-network:

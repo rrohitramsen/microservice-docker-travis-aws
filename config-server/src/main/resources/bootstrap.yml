@@ -1,0 +1,23 @@
+server:
+  port: ${CONFIG_SERVER_DEFAULT_PORT:8888} # Indicate the default PORT where this service will be started
+# For git repository
+#spring.cloud.config.server.git.uri==config-repo path
+#spring.cloud.config.server.git.skip-ssl-validation=true
+#management.security.enabled=false
+
+# For File System:
+spring:
+  application:
+    name: config-server
+  config:
+    name: config-server
+#  profiles:
+#    active: native
+  cloud:
+    config:
+      server:
+ #       native:
+ #         search-locations: file:///${user.home}/docker/java/config-repo
+        git:
+          uri: https://github.com/rrohitramsen/config-repo.git
+        skip-ssl-validation: true
