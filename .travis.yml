@@ -1,0 +1,26 @@
+language: java
+
+sudo: required
+services:
+    - dcoker
+
+env:
+  COMPOSE_VERSION: 1.5.2
+
+before_install:
+  # Docker Compose Install 
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - docker-compose build
+  - docker-compose up -d
+
+before_script:
+  # Startup the app
+  - curl http://localhost:8081/author-details/Author-1
+
+after_script:
+  - docker-compose stop
+  - docker-compose rm -f
