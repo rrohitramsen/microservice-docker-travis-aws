@@ -9,10 +9,20 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 before_script:
-  - docker-compose up
+  - docker-compose up > build.log 2>&1
 #script:
  # - docker-compose exec users python manage.py test
   #- docker-compose exec users black project
   #- docker-compose exec users flake8 project
+
+after_failure:
+  # dump the last 2000 lines of our build, and hope the error is in that!
+  - tail --lines=2000 build.log
+
+after_success:
+  # Log that the build worked, because we all need some good news
+  - echo "Buildroot build succeeded, binary in ./build"
+  - curl http://localhost:8081/author-details/Author-1
+
 after_script:
   - docker-compose down
