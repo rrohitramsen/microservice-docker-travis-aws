@@ -9,7 +9,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 before_script:
-  - docker-compose up > build.log 2>&1
+  - travis_wait 30 docker-compose up > build.log 2>&1
 #script:
  # - docker-compose exec users python manage.py test
   #- docker-compose exec users black project
