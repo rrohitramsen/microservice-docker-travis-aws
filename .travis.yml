@@ -1,9 +1,7 @@
-language: java
-
 sudo: required
 services:
     - docker
-    
+
 after_sucess:
   - docker build -t eureka-server ./service-discovery
   - docker build -t config-server ./config-server
