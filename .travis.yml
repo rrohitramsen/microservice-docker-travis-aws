@@ -3,7 +3,10 @@ language: java
 sudo: required
 services:
     - dcoker
-
+cache:
+  directories:
+  - $HOME/.m2
+  
 env:
   COMPOSE_VERSION: 1.8.1
 
